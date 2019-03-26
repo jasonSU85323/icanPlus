@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Index</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+        function Qdata() {
+            $$.post(
+                'http://haoyi.synology.me:8002/JsonOutput',
+                {   
+                	'test': 'XD'
+                },
+                function(data){
+					alert(data["A"])        
+                }
+            );
+     		// alert("apple")
+        }
+    </script>     
+  </head>
+  <body>
+    <h1>Hello World!!</h1>
+	<button onclick="Qdata()">查詢</button>
+  </body>
+</html>
