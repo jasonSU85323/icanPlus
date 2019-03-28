@@ -2,34 +2,41 @@ import web
 import ConfigParser
 import pymysql
 import json
+import os
 
 urls = (
-    '/', 'index',
+    '/', 'Index',
     '/DBOutput', 'DBOutput',
     '/JsonOutput', 'JsonOutput',
-    '/InputData', 'InputData'
+    '/InputData', 'InputData',
+    '/in','Login',
+    '/out','Logout',
+    '/page1','page1',
+    '/images/(.*)', 'images' #this is where the image folder is located....
 )
 
 web.config.debug = False
 app = web.application(urls, globals())
 session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={'privkey':None})    
 
+# Read Configure
+conf = ConfigParser.ConfigParser()
+conf.read("config.conf")
+#Databse definition
+address = conf.get("MySQL Database", "address"   )        
+account = conf.get("MySQL Database", "account"     )
+password = conf.get("MySQL Database", "password"   )
+datasheet = conf.get("MySQL Database", "datasheet"   )
+#Template definition
+template = conf.get("Template", "template" )
+render = web.template.render(template)
+
+
 class Login:
     def __init__(self):
-        #Value definition
-
-        conf = ConfigParser.ConfigParser()
-        conf.read("config.conf")
         #Databse definition
-        self.address = conf.get("MySQL Database", "address"   )        
-        self.account = conf.get("MySQL Database", "account"     )
-        self.password = conf.get("MySQL Database", "password"   )
-        self.datasheet = conf.get("MySQL Database", "datasheet"   )
-        self.db = pymysql.connect(self.address,self.account,self.password,self.datasheet,charset="utf8")
+        self.db = pymysql.connect(address, account, password, datasheet, charset="utf8")
         self.cursor = self.db.cursor()
-        #Template definition
-        self.template = conf.get("Template", "template" )
-        self.render = web.template.render(self.template)
 
     def GET(self):
         return self.render.SignIn() # ???
@@ -39,57 +46,61 @@ class Login:
         usernumb = i.user
         password = i.password
 
-        sql = "SELECT acc, pass FROM Account"
-        self.cursor.execute(sql)
+        self.cursor.callproc('get_account')
         data = self.cursor.fetchall()
+        print(data)
         dbuasr = data[0][0]
         dbpass = data[0][1]
 
         if usernumb == dbuasr and password ==dbpass:
             session.logged_in = True
-            raise web.seeother('/CurrentState') # ???
+            self.db.close()
+            print()
+            raise web.seeother('/page1') # ???
         else:
             session.logged_in = False
+            self.db.close()
             raise web.seeother('/')
 class Logout:
+    def __init__(self):
+        pass
     def GET(self):
         session.logged_in = False
         raise web.seeother('/')
-
-class index:
+class page1:
     def __init__(self):
-        conf = ConfigParser.ConfigParser()
-        conf.read("config.conf")
-        #Template definition
-        self.template 	= conf.get("Template", "template"	)
-        self.render = web.template.render(self.template)
+        pass
     def GET(self):
-        print(self.template)
-        return self.render.index()
+        if session.logged_in == False:
+            raise web.seeother('/') 
+        return render.page1()
+
+class Index:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.index()
 
 class DBOutput:
     def __init__(self):
         #Value definition
         self.mode = [] 
-        conf = ConfigParser.ConfigParser()
-        conf.read("config.conf")
+
         #Databse definition
-        self.address = conf.get("MySQL Database", "address"   )        
-        self.account = conf.get("MySQL Database", "account"		)
-        self.password = conf.get("MySQL Database", "password"	)
-        self.datasheet = conf.get("MySQL Database", "datasheet"   )
-        self.db = pymysql.connect(self.address,self.account,self.password,self.datasheet,charset="utf8")
+        self.db = pymysql.connect(address, account, password, datasheet,charset="utf8")
         self.cursor = self.db.cursor()
-        #Template definition
-        self.template = conf.get("Template", "template"	)
-        self.render = web.template.render(self.template)
 
     def POST(self):
-        sql = "SELECT acc, pass FROM Account"   
-        print(sql)
-        self.cursor.execute(sql)
+        # sql = "SELECT acc, pass FROM Account"   
+        # print(sql)
+        # self.cursor.execute(sql)
+        # data = self.cursor.fetchall()
+        # print(data)
+        
+        self.cursor.callproc('get_account')
         data = self.cursor.fetchall()
         print(data)
+
         for row in data:
             v = {'acc':row[0], 'pass':row[1]}
             self.mode.append(v)
@@ -102,11 +113,6 @@ class JsonOutput:
     def __init__(self):
         #Value definition
         self.mode = []        
-        conf = ConfigParser.ConfigParser()
-        conf.read("config.conf")
-        #Template definition
-        self.template   = conf.get("Template", "template"   )
-        self.render = web.template.render(self.template)
     def POST(self):
         i = web.input()
         print(i.test)        
@@ -116,20 +122,67 @@ class JsonOutput:
                 }        
         web.header('Content-Type', 'application/json')
         return json.dumps(value)
-        return self.render.index()
 
 class InputData:
     def __init__(self):
-        conf = ConfigParser.ConfigParser()
-        conf.read("config.conf")
-        #Template definition
-        self.template = conf.get("Template", "template"   )
-        self.render = web.template.render(self.template)
+        pass
 
     def GET(self):
         i = web.input()
         print(i.t)
-        return self.render.index()
+        return render.index()
+
+class images:
+    def GET(self,name):
+        ext = name.split(".")[-1] # Gather extension
+        
+        cType = {
+            "png":"images/png",
+            "jpg":"images/jpeg",
+            "gif":"images/gif",
+            "ico":"images/x-icon"            }
+
+        if name in os.listdir('images'):  # Security
+            web.header("Content-Type", cType[ext]) # Set the Header
+            return open('images/%s'%name,"rb").read() # Notice 'rb' for reading images
+        else:
+            raise web.notfound()
+
+class Registered:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.Registered()
+
+class Inquire:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.Inquire()
+
+class Question:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.Question()
+
+class QuestionStatus:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.QuestionStatus()
+
+class PersonalInformation:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.PersonalInformation()
+
+class Collection:
+    def __init__(self):
+        pass
+    def GET(self):
+        return render.Collection()
 
 
 if __name__ == "__main__":
