@@ -1,6 +1,6 @@
 # ican plus
 一個知識共向平台，使用者透過提供**專業知識**來獲得獎勵。
-![介面](/Demo/logo.jpg)
+![logo](/demo/logo.jpg)
 ### 一、目錄結構
 * icanPlus
     * static	-- web.py中加載css和js等靜態文件的地方
@@ -18,4 +18,4 @@
 
 ### 三、Demo
 #### 介面
-![介面](/Demo/index.jpg)
+![介面](/demo/index.jpg)
