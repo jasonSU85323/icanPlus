@@ -1,0 +1,392 @@
+$def with (static, name, title, content, c_static, quota)
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <title>skr Information City</title>
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/MyBootstrap/base.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/jquery/axjs0.js"></script>
+	<script type="text/javascript" src="/static/jquery/skrscripts.js"></script>
+    <script>
+        $$(document).ready(function() {  
+            $$(window).bind('scroll', function() { 
+                if ($$(window).scrollTop() > 600) {
+                    $('nav').addClass('fixed');
+                } else {
+                    $('nav').removeClass('fixed');
+                }
+            });
+        });
+    </script>
+	<script>
+		function onloadFunction() {
+			var afrom=document.getElementById("afrom");
+			var username=document.getElementById("aname");
+			var usertag = document.getElementById("user_icon");
+			var logout_tag = document.getElementById("login_menu1");
+			var register_tag = document.getElementById("login_menu2");
+			
+			if (afrom.value == "f" && username.value == "none"){
+				return;
+			}else{
+				logout_tag.innerHTML = "Log Out";
+				logout_tag.href = "/command/signOut";
+				register_tag.innerHTML = "";
+				register_tag.href = "#";
+				usertag.innerHTML = username.value;
+			}
+		}
+		function test1(title, name){		// 網頁載入時，會自動執行，title為問題標題 ，name為用戶名稱，他會傳title、name至server，然後server會將該提問的所有回答傳來，請接收後存進全域變數。
+			//alert(title + " and " + name);
+
+			if(name == 'none'){
+				//lert("目前沒有使用者喔");
+				document.getElementById("userans").style.display="none";//回答區塊隱藏
+				document.getElementById("btstar").style.display="none";
+				
+			$$.post(
+				'/link/question',
+				{
+					title:title,
+					user:name
+
+				},
+				function(data){
+					//alert(data.length);
+					for(i = 0;i<=data.length ;i++){
+						
+						var ElapsedTime = data[i]['ElapsedTime'];
+						var ElapsedTimestr = " ";						
+						if (parseInt(ElapsedTime/60) == 0){
+							ElapsedTimestr += ElapsedTime + "秒鐘前"
+
+						}else if (parseInt(ElapsedTime/60/60) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60) + "分鐘前"
+
+						}else if (parseInt(ElapsedTime/60/60/24) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60) + "小時前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24) + "天前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7/4) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24/7) + "星期前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7/4/12) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24/7/4) + "月前"
+
+						}else{
+							ElapsedTimestr += ElapsedTime
+						}
+						$$('#lista').append(
+							"<div class=\"list-group-item\">"
+									+"<a href=\"#\">"
+										+"<img src=\"/static/images/person_ans.png\" class=\"pull-left photo\" alt=\"「"+ data[i]["a_people"] + "」\"/>"
+									+"</a>"
+									+"<div>"
+										+"<span>"+ data[i]["a_content"]+"</span>"
+									+"</div>"
+									+"<div>"
+										+"<div style=\"font-size:70%\"><br>"
+											+"<a href=\"#\" >"+ data[i]["a_people"] +"</a><span >-</span>"
+											+"<span class=\"localtime\" data-ts=\"1553729357\">"+  ElapsedTimestr + " </span>"
+										+"</div>"
+									+"</div>"
+									+"<div align=\"right\">"
+										+"<a style=\"display:none\" href=\"/like?name=$name&title=$title&a_content=" + data[i]["a_content"] + "\" class=\"btn btn-labeled btn-success\">"
+											+"<span class=\"btn-label\"><i class=\"glyphicon glyphicon-thumbs-up\"></i></span>Like</a>"
+									+"</div>"
+							+"</div>"
+
+
+							);
+						}
+					}
+				
+				);
+
+			}else{
+				//alert(name);
+				document.getElementById("userans").style.display="";//回答區塊顯示
+				document.getElementById("btstar").style.display="";
+				if($c_static == 0){
+
+					document.getElementById("strstar").innerHTML='收藏';
+					$$('#btstar').attr('disabled', false);
+					//document.getElementById('btstar').disabled=false;　
+				}else{
+					document.getElementById("strstar").innerHTML='已收藏';
+					//document.getElementById('btstar').disabled=true;　
+					$$('#btstar').attr('disabled', true);
+					document.getElementById("btstar").href="#";
+					
+					
+
+				}
+				$$.post(
+				'/link/question',
+				{
+					title:title,
+					user:name
+
+				},
+				function(data){
+					//alert(data.length);
+					for(i = 0;i<=data.length ;i++){
+						var vote = "<a href=\"/like?name=$name&title=$title&a_content=" + data[i]["a_content"] + "\" class=\"btn btn-labeled btn-success\">"
+								+"<span class=\"btn-label\"><i class=\"glyphicon glyphicon-thumbs-up\"></i></span>Like</a>"
+						if(data[i]["v_static"] == 1){
+							vote = "<a href=\"/like?name=$name&title=$title&a_content=" + data[i]["a_content"] + "\" onclick=\"return false;\" class=\"btn btn-labeled btn-success\" disabled>"
+								+"<span class=\"btn-label\"><i class=\"glyphicon glyphicon-thumbs-up\"></i></span>Like</a>"
+						}
+						var ElapsedTime = data[i]['ElapsedTime'];
+						var ElapsedTimestr = " ";						
+						if (parseInt(ElapsedTime/60) == 0){
+							ElapsedTimestr += ElapsedTime + "秒鐘前"
+
+						}else if (parseInt(ElapsedTime/60/60) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60) + "分鐘前"
+
+						}else if (parseInt(ElapsedTime/60/60/24) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60) + "小時前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24) + "天前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7/4) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24/7) + "星期前"
+
+						}else if (parseInt(ElapsedTime/60/60/24/7/4/12) == 0){
+							ElapsedTimestr += parseInt(ElapsedTime/60/60/24/7/4) + "月前"
+
+						}else{
+							ElapsedTimestr += ElapsedTime
+						}						
+
+						$$('#lista').append(
+							"<div class=\"list-group-item\">"
+									+"<a href=\"#\">"
+										+"<img src=\"/static/images/person_ans.png\" class=\"pull-left photo\" alt=\"「"+ data[i]["a_people"] + "」\"/>"
+									+"</a>"
+									+"<div>"
+										+"<span>"+ data[i]["a_content"]+"</span>"
+									+"</div>"
+									+"<div>"
+										+"<div style=\"font-size:70%\"><br>"
+											+"<a href=\"#\" >"+ data[i]["a_people"] +"</a><span >-</span>"
+											+"<span class=\"localtime\" data-ts=\"1553729357\">"+  ElapsedTimestr + " </span>"
+										+"</div>"
+									+"</div>"
+									+"<div align=\"right\">"
+										+ vote
+									+"</div>"
+							+"</div>"
+
+
+							);
+						}
+					}
+				
+				);
+			}
+
+		}
+// 需要的URL：action="/link/question" ，method="post"
+// 傳送：{ title : <value>，name : <value> }
+// 接收：
+// 		[
+// 			{a_people : <value>, a_content : <value>，ElapsedTime : <value>，v_static : <value>},
+// 			...
+// 		]
+// 參數說明：
+// 		a_people		：回答人 
+// 		a_content		：回答內容
+// 		ElapsedTime		：回答已經過時間(秒)
+// 		v_static		：使用者是否有對該問題投票。1=有、0=沒有。
+	
+	</script>
+</head>
+
+<body onload="onloadFunction(); test1('$title', '$name');">
+	<input type="hidden" name="afrom" id="afrom" value="$static"> 			<!-- value值為登入狀態，s為登入，f為未登入 -->
+    <input type="hidden" name="aname" id="aname" value="$name">				<!-- 若登入，value為使用者名子，未登入則顯示none -->
+    <input type="hidden" name="title" id="title" value="$title">			<!-- value值為問題標題 -->
+	<input type="hidden" name="content" id="content" value="$content">		<!-- value值為問題內容 -->    
+    <input type="hidden" name="c_static" id="c_static" value="$c_static">	<!-- value值為是否有收藏，1為有，0為沒有 -->
+    <input type="hidden" name="quota" id="quota" value="$quota">
+    <section class="main-menu">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+						</button>
+							   <img style="width:15%;" src="/static/images/logo.jpg">
+                        </div>		
+						<div style="width:60%;" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+							<form action="/command/inquire" class="search-form">
+								<div class="form-group has-feedback">
+									<label for="search" class="sr-only">Search</label>
+									<input type="text" class="form-control" name="search" id="search" placeholder="search">
+									<span class="glyphicon glyphicon-search form-control-feedback"></span>
+								</div>
+							</form>
+						</div>
+                        <div>
+                            <div class="collapse navbar-collapse" id="myNavbar">
+                                <!-- 拉到右邊的導覽列清單 -->
+                                <ul class="nav navbar-nav navbar-right">
+									<li class="active"><a href="/">Home<span class="sr-only">(目前頁面)</span></a></li>
+									<li><a href="/command/postQuestion">提問</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+											<span id="user_icon">個人</span><span class="caret"></span>
+										</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/link/profile">設定</a></li>
+                                            <li><a href="/link/vault">VAULT</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/link/favorite">收藏</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    <li><a id="login_menu1" href="/command/signIn">Log In</a></li>
+                                    <li><a id="login_menu2" href="/command/signUp">註冊</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </section>
+    <section class="intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<!-- Question detail -->
+					<div class="row">
+						<div class="col-md-12" align="left">
+							<div class="col-md-2">
+								<div id="profile-img">
+									<a href="#">
+									<img data-id="4Q7LOM" class="pull-left photo" src="/static/images/person.jpg" alt="詩詩"/>
+									</a>
+								</div>
+							</div>
+							<div class="col-md-10">
+								<div class="row">
+									<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+										<h3>
+										$title
+										</h3>
+										<p class="list-group-item-text title"><br>
+											<span>$content</span>
+										</p>
+									</div>
+									<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1" >
+										<a  id="btstar"  style="width: 100px" href="/link/favorite/add?name=$name&title=$title" class="btn btn-labeled btn-primary" >	 <!-- 若未登入或是沒收藏，要在class裡加上disabled，讓使用者無法按 -->
+											<span class="btn-label"><i style="float: left;" class="glyphicon glyphicon-star-empty"></i><div id="strstar" ></div></span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12" align="left">
+							<h4>Answer</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div  class="list-group" align="left">
+	
+							<div id ="lista" lass="list-group-item">
+								
+							</div>
+									
+								
+								<div id ="userans" class="list-group-item">
+									<div class="add-answer-box">
+										<a href="#">
+											<img src="/static/images/person_ans.png" class="pull-left photo" alt="Magicq"/>
+										</a>
+										<p>$name</p>
+										<div>
+											<form action="/event/answer" method="post">
+												<div>
+													<textarea name="content" id="content" placeholder="Add your answer" maxlength="500" rows="5" style="width:100%;"></textarea>
+												</div>
+												<div>
+													<div>
+														<br>
+														<button type="submit" class="btn btn-primary">Submit</button>
+														<button type="reset" class="btn btn-outline-secondary">Cancel</button>
+													</div>
+												</div>
+												<input type="hidden" name="username" id="username" value="$name">
+												<input type="hidden" name="title" id="title" value="$title">
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!-- Question detail: End -->
+				</div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <section class="footer1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <ul>
+                            <li>服務條款</li>
+                            <li>常見問題</li>
+                            <li>隱私說明</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <ul>
+                            <li>商業合作</li>
+                            <li><a href="/about">關於我們</a></li>
+                            <li><a href="mailto:a57345734@yahoo.com.tw">聯絡我們</li>
+                        </ul>
+                    </div>
+                    <img src="/static/images/facebook.png" /> <img src="/static/images/twitter.png" /> <img src="/static/images/youtube.png" /> </div>
+                </div>
+            </div>
+        </section>
+        <section class="footer2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p>©2019 SkrInformationCity. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+
+ <div id="fixed-btn"><a href="#"><span class="glyphicon glyphicon-arrow-up"></span> to Top</a></div>
+
+
+
+
+</body>
+
+</html>

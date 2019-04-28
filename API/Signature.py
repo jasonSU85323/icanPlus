@@ -2,7 +2,14 @@
 # client ID (e.g. ba6cabfb4de8d9f4f388124b1afe82b1)
 # client key (e.g. aefd2b59d780eb29bc95b6cf8f3503233ad702141b20f53c8a645afbb8c6616048c5e9cc741e0ebee1a2469c68364e57e29dbeeabadc0b67958b9c3da7eabab9)
 # mining key (e.g. demo)
+# ------------------------------------------------------------------------------------------------------------------------------------------------
 
+# product name: Q&A+
+# client ID: 6d73661936a1d4f5d8e1fec12086dd20
+# client secret: b69af4646ceed2c1bbc44f9c0ac1f63c3edfeb4dc899b7bd38287ccb6791bcdb2d97f35ea6556dd5840ec7e7edf0cbf5e3bbf6e06e18a0e50a3fbf969e60c530
+# ------------------------------------------------------------------------------------------------------------------------------------------------
+# ClientID：它會是唯一的，也就是這一個 ClientID 就是對應到你所設定的程式
+# Secret：通常是可以在服務提供者所提供的申請介面中隨時做更換，避免 Secret 被冒用
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 import hashlib
 import hmac
@@ -50,7 +57,7 @@ url = '{{host}}/oauth/authorize'
 payload = { "client_id": "{{client_id}}",
             "timestamp": 1553592420,
             "nonce": "881",
-            "state": "{{be761fd22db506428c9b07d31ff549e7f70ecd0a872c2e9af4380d7902d34c23ca3363c9c3e2d6aa7e94221345a4f67737e1dfe3b7179ffd28858afef77bdeb}}",
+            "state": "{{8be761fd22db506428c9b07d31ff549e7f70ecd0a872c2e9af4380d7902d34c23ca3363c9c3e2d6aa7e94221345a4f67737e1dfe3b7179ffd28858afef77bdeb}}",
             "user_id": "{{user_id}}"
 }
 headers = {

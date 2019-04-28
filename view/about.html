@@ -1,0 +1,193 @@
+$def with (static, username)
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+    <title>skr Information City</title>
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/MyBootstrap/base.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/jquery/axjs0.js"></script>
+	<script type="text/javascript" src="/static/jquery/skrscripts.js"></script>
+    <script>
+        $$(document).ready(function() {  
+            $$(window).bind('scroll', function() { 
+                if ($$(window).scrollTop() > 600) {
+                    $('nav').addClass('fixed');
+                } else {
+                    $('nav').removeClass('fixed');
+                }
+            });
+        });
+    </script>
+	<script>
+		function onloadFunction() {
+			var afrom=document.getElementById("afrom");
+			var username=document.getElementById("aname");
+			var usertag = document.getElementById("user_icon");
+			var logout_tag = document.getElementById("login_menu1");
+			var register_tag = document.getElementById("login_menu2");
+			
+			if (afrom.value == "f" && username.value == "none"){
+				return;
+			}else{
+				logout_tag.innerHTML = "Log Out";
+				logout_tag.href = "/command/signOut";
+				register_tag.innerHTML = "";
+				register_tag.href = "#";
+				usertag.innerHTML = username.value;
+			}
+		}
+	</script>
+</head>
+
+<body onload="onloadFunction()">
+	<input type="hidden" name="afrom" id="afrom" value="$static"> 
+    <input type="hidden" name="aname" id="aname" value="$username">
+    <section>
+        <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							     <img style="width:15%;" src="/static/images/logo.jpg">
+                        </div>		
+						<div style="width:60%;" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+							<form action="/command/inquire" class="search-form">
+								<div class="form-group has-feedback">
+									<label for="search" class="sr-only">Search</label>
+									<input type="text" class="form-control" name="search" id="search" placeholder="search">
+									<span class="glyphicon glyphicon-search form-control-feedback"></span>
+								</div>
+							</form>
+						</div>
+                        <div>
+                            <div class="collapse navbar-collapse" id="myNavbar">
+                                <!-- 拉到右邊的導覽列清單 -->
+                                <ul class="nav navbar-nav navbar-right">
+									<li class="active"><a href="/">Home<span class="sr-only">(目前頁面)</span></a></li>
+									<li><a href="/command/postQuestion">提問</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+											<span id="user_icon">個人</span><span class="caret"></span>
+										</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/link/profile">設定</a></li>
+                                            <li><a href="/link/vault">VAULT</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/link/favorite">收藏</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                    <li><a id="login_menu1" href="/command/signIn">Log In</a></li>
+                                    <li><a id="login_menu2" href="/command/signUp">註冊</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </section>
+    <section class="intro">
+        <div class="container">
+            <div class="row">
+					<div id ="listq" class="list-group" align="left">
+
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<div class="thumbnail">
+								<div class="caption">
+									<h3><span class="glyphicon glyphicon-link"></span>壽大衛</h3>
+									<p>Dr. Shou are interested in digital transformation to help both industry development and
+										help young people especially in innovation entrepreneur. He had participated more than
+										ten Hackathon, such as NASA, Smart city, Block chain, and AIoT etc during last two
+										years. He involved in international fairs in block chain, makers, innovation, entrepreneur
+										meet up over 90 events for last two years and keep tracking the team up and
+										communities for international society.</p>                        
+								</div>
+								<div>
+									<a href="http://www.airitilibrary.com/Publication/alDetailedMesh?DocID=a0000030-201812-201901100002-201901100002-1-8&amp;fbclid=IwAR0YqGfLKFoqMHZl1CqZT7CJeuN6zVxhKzeAvRNXxxq5AT1ms5NL8ljipNE" target="_blank">
+										Technology Trends You Need to Know - Blockchain
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<div class="thumbnail">
+								<div class="caption">
+									<h3><span class="glyphicon glyphicon-link"></span>蘇鴻章</h3>
+									<p>臺北市立大學 資訊科學系 學生</p>
+									<p>目前正在研究有關區塊鏈相關應用。</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<div class="thumbnail">
+								<div class="caption">
+									<h3><span class="glyphicon glyphicon-link"></span>陳豪毅</h3>
+									<p>臺北市立大學 資訊科學系 學生</p>                   
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+							<div class="thumbnail">
+								<div class="caption">
+									<h3><span class="glyphicon glyphicon-link"></span>李秋蘭</h3>
+									<p>臺北市立大學 資訊科學系 學生</p>                         
+								</div>
+							</div>
+						</div>
+					</div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <section class="footer1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <ul>
+                            <li>服務條款</li>
+                            <li>常見問題</li>
+                            <li>隱私說明</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <ul>
+                            <li>商業合作</li>
+                            <li><a href="/about">關於我們</a></li>
+                            <li><a href="mailto:a57345734@yahoo.com.tw">聯絡我們</li>
+                        </ul>
+                    </div>
+                    <img src="/static/images/facebook.png" /> <img src="/static/images/twitter.png" /> <img src="/static/images/youtube.png" /> </div>
+                </div>
+            </div>
+        </section>
+        <section class="footer2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p>©2019 SkrInformationCity. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+
+ <div id="fixed-btn"><a href="#"><span class="glyphicon glyphicon-arrow-up"></span> to Top</a></div>
+
+
+
+
+</body>
+
+</html>

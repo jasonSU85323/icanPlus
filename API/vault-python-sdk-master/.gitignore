@@ -1,0 +1,8 @@
+*.swp
+*.swo
+
+*.pyc
+
+.venv/
+Pipfile.lock
+.coverage
