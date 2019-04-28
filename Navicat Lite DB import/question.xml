@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="yes"?>
+<RECORDS>
+<RECORD>
+<q_title>python套件安裝到Synology NAS上</q_title>
+<q_people>hao</q_people>
+<q_content>各位前輩好
+
+想請各位幫忙
+
+我想在群暉的nas上安裝套件(DS115)
+
+有先安裝nas上python3
+
+再來安裝virtualenv分開我的安裝環境
+
+到這裡來都是OK的
+
+接下來進入virtualenv後我要安裝套件pymysql</q_content>
+<q_pro>Computer</q_pro>
+<q_mithril>20.0</q_mithril>
+<q_time>2019-04-27 07:23:22</q_time>
+<sys_time_s>2019-04-27 15:24:05</sys_time_s>
+<sys_time_e>2019-05-02 15:24:05</sys_time_e>
+<static>1</static>
+<process>1</process>
+</RECORD>
+<RECORD>
+<q_title>你們是怎麼歸類化學的?</q_title>
+<q_people>jasonsu</q_people>
+<q_content>例如這篇文章 
+https://tw.answers.yahoo.com/question/index?qid=20120425000016KK06725 
+
+我現在是用評量然後不會的缺1補1 
+
+可是這個人似乎可以歸類，我做不到啊，我只能把題目集合，但是歸納又是另外一回事了 
+
+還請賜教，如何這樣子歸類化學式</q_content>
+<q_pro>Education</q_pro>
+<q_mithril>20.0</q_mithril>
+<q_time>2019-04-27 07:30:18</q_time>
+<sys_time_s>2019-04-27 15:30:48</sys_time_s>
+<sys_time_e>2019-05-02 15:30:48</sys_time_e>
+<static></static>
+<process></process>
+</RECORD>
+<RECORD>
+<q_title>請問哪裡可以獲得秘銀幣?</q_title>
+<q_people>Linda</q_people>
+<q_content>MAX交易所有秘銀幣,對這個有很大的興趣,請幫忙告訴我,非常謝謝了.</q_content>
+<q_pro>Blockchain</q_pro>
+<q_mithril>21.0</q_mithril>
+<q_time>2019-04-28 04:21:17</q_time>
+<sys_time_s>2019-04-28 12:26:32</sys_time_s>
+<sys_time_e>2019-05-03 12:26:32</sys_time_e>
+<static></static>
+<process></process>
+</RECORD>
+<RECORD>
+<q_title>問題</q_title>
+<q_people>jasonsu</q_people>
+<q_content>1123</q_content>
+<q_pro>Blockchain</q_pro>
+<q_mithril>21.0</q_mithril>
+<q_time>2019-04-28 05:58:41</q_time>
+<sys_time_s>2019-04-28 14:03:51</sys_time_s>
+<sys_time_e>2019-05-03 14:03:51</sys_time_e>
+<static></static>
+<process></process>
+</RECORD>
+</RECORDS>
